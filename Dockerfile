@@ -6,7 +6,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Étape 2 : Image finale légère
-FROM openjdk:11-jre-slim
+FROM openjdk:21-jre-slim
 WORKDIR /app
 COPY --from=build /app/target/my-app-1.0-SNAPSHOT.jar app.jar
 EXPOSE 8080

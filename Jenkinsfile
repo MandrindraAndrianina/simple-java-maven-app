@@ -39,4 +39,43 @@ pipeline {
             }
         }
     }
+
+    post {
+        failure {
+            emailext(
+                subject: " Build #${BUILD_NUMBER} a échoué !",
+                body: """
+                    Bonjour,
+
+                    Le build Jenkins #${BUILD_NUMBER} a échoué.
+
+                    Projet   : ${JOB_NAME}
+                    Build    : #${BUILD_NUMBER}
+                    Statut   : FAILURE 
+                    Lien     : ${BUILD_URL}
+
+                    Merci de vérifier les logs.
+                """,
+                to: 'adrianina59@gmail.com',
+                recipientProviders: [requestor()]
+            )
+        }
+        success {
+            emailext(
+                subject: " Build #${BUILD_NUMBER} réussi !",
+                body: """
+                    Bonjour,
+
+                    Le build Jenkins #${BUILD_NUMBER} a réussi.
+
+                    Projet   : ${JOB_NAME}
+                    Build    : #${BUILD_NUMBER}
+                    Statut   : SUCCESS 
+                    Lien     : ${BUILD_URL}
+                """,
+                to: 'adrianina59@gmail.com',
+                recipientProviders: [requestor()]
+            )
+        }
+    }
 }
